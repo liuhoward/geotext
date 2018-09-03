@@ -101,9 +101,10 @@ class GeoText(object):
 
     """
 
-    index = build_index()
+    def __init__(self):
+        self.index = build_index()
 
-    def __init__(self, text, country=None):
+    def get_country_mentions(self, text, country=None):
         city_regex = r"[A-ZÀ-Ú]+[a-zà-ú]+[ \-]?(?:d[a-u].)?(?:[A-ZÀ-Ú]+[a-zà-ú]+)*"
         candidates = re.findall(city_regex, text)
         # Removing white spaces from candidates
@@ -129,6 +130,8 @@ class GeoText(object):
                                       for nationality in self.nationalities])
         self.country_mentions = OrderedDict(
             Counter(self.country_mentions).most_common())
+
+        return self.country_mentions
 
 if __name__ == '__main__':
     print(GeoText('In a filing with the Hong Kong bourse, the Chinese cement producer said ...').countries)
